@@ -67,3 +67,15 @@ In this project we will use the **Bottom Tab Navigator**:
 
 1. Install it by `yarn add react-navigation-tabs`;
 2. And import it within [routes.js](./routes.js);
+
+# Appearence
+
+## React Native Linear Gradient
+
+Let's implement a gradient background color for our application.
+
+First we will install running `yarn add react-native-linear-gradient`.
+
+> It is necessary to make `link` with this library. Run `react-native link react-native-linear-gradient`
+
+Now create a new component: [src/components/Background/index.js](src/components/Background/index.js) and open it to see the implementations. Import it at the desired page-component, in our case within [src/pages/SignIn/index.js](./src/pages/SignIn/index.js)

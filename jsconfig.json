@@ -1,0 +1,8 @@
+{
+  "compileOnSave": {
+    "baseUrl": "src",
+    "paths": {
+      "~/*": ["*"]
+    }
+  }
+}

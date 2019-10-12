@@ -23,7 +23,7 @@ function Input({style, icon, ...rest}, ref) {
    * 1. We will import { forwardRef } from 'react;
    * 2. We will add export default forwardRef(Input); at the end of this script
    * 3. Add the second parameter of this component Input({...}, ref);
-   * 4. Add ref attribute in TInput: <TInput {...rest} ref={red} />
+   * 4. Add ref attribute in TInput: <TInput {...rest} ref={ref} />
    *
    * Now we can use this Input component using <Input ref={ref} /> and manipulate it.
    */
@@ -31,7 +31,7 @@ function Input({style, icon, ...rest}, ref) {
   return (
     <Container style={style}>
       {icon && <Icon name={icon} size={20} color="rgba(255, 255, 255, 0.5)" />}
-      <TInput {...rest} />
+      <TInput {...rest} ref={ref} />
     </Container>
   );
 }

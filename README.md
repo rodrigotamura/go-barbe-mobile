@@ -79,3 +79,7 @@ First we will install running `yarn add react-native-linear-gradient`.
 > It is necessary to make `link` with this library. Run `react-native link react-native-linear-gradient`
 
 Now create a new component: [src/components/Background/index.js](src/components/Background/index.js) and open it to see the implementations. Import it at the desired page-component, in our case within [src/pages/SignIn/index.js](./src/pages/SignIn/index.js)
+
+## Input & Button
+
+We will create a component for [Input](./src/components/Input/index.js) and another for [Button](./src/components/Button/index.js), because we will use them over whole application.

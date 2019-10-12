@@ -4,7 +4,7 @@ import reactotronSaga from 'reactotron-redux-saga';
 
 if (__DEV__) {
   // for iOS is not necessary to pass any host. Empty
-  const tron = Reactotron.configure({host: '192.168.0.26'})
+  const tron = Reactotron.configure({host: 'localhost'})
     .useReactNative()
     .use(reactotronRedux())
     .use(reactotronSaga())

@@ -16,7 +16,10 @@ import {
   SignLinkText,
 } from './styles';
 
-export default function SignIn() {
+export default function SignIn({navigation}) {
+  /**
+   * {navigation} is a native property from a component which is responsible from navigation
+   */
   return (
     <Background>
       <Container>
@@ -40,7 +43,7 @@ export default function SignIn() {
           <SubmitButton onPress={() => {}}>Login</SubmitButton>
         </Form>
 
-        <SignLink onPress={() => {}}>
+        <SignLink onPress={() => navigation.navigate('SignUp')}>
           <SignLinkText>Create new account</SignLinkText>
         </SignLink>
       </Container>

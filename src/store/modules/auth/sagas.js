@@ -1,5 +1,5 @@
 import {Alert} from 'react-native';
-import {all, takeLatest, call, put, delay} from 'redux-saga/effects';
+import {all, takeLatest, call, put /* , delay */} from 'redux-saga/effects';
 
 import api from '~/services/api';
 import {signInSuccess, signFailure} from './actions';
@@ -23,7 +23,7 @@ export function* signIn({payload}) {
     // Including token in header requests
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
-    yield delay(3000); // applying delay
+    // yield delay(3000); // applying delay
 
     yield put(signInSuccess(token, user));
 

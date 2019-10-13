@@ -84,7 +84,7 @@ Now create a new component: [src/components/Background/index.js](src/components/
 
 We will create a component for [Input](./src/components/Input/index.js) and another for [Button](./src/components/Button/index.js), because we will use them over whole application.
 
-## Applying delay at Saga
+## Applying delay in Saga
 
 We want to verify how is the loading in our [Button Component](./src/components/Button) when we send something to the server. However, when we are working locally it is very difficult to test because it is almost imperceptible due speed of response.
 
@@ -93,3 +93,107 @@ In this case we will apply some delay in our Saga's response:
 1. In some [sagas file](./src/store/modules/auth/sagas.js) import `delay` from `redux-saga/effects`;
 2. Add `yield.delay(<milisseconds>)` in the place you wish to test your application;
 3. Test the feature (in this case we were testing [Signin Page](./src/pages/SignIn/index.js)).
+
+## What do we need to do after sign in?
+
+In our application, after user sign in or sign up properly, we need to redirect him to Dashboard, which is accessed only by authenticated users (with token).
+
+However, we understand that our token is stored at Redux. The challenge is, **how could we make the application forward the authenticated user to Dashboard (initial route)?**
+
+Theoretically we could manage the authenticated routes by [src/index.js](./src/index.js) getting the token by `useSelector()`. However we can not do it because we can grab any state from Redux only within `<Provider>` wrap.
+
+```javascript
+// actual src/index.js
+export default function App() {
+  const signed = useState(state => state.auth.logged); // ❌ we cannot do it because it is not wrapped by <Provider>
+
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <StatusBar barStyle="light-content" backgroundColor="#22202C" />
+        <Route />
+      </PersistGate>
+    </Provider>
+  );
+}
+```
+
+To solve this problem, let's apply the following procedures:
+
+1. In [src/index.js](./src/index.js) change the name `App()` to `Index()`
+2. Let's create [src/App.js](./src/App.js), and the name of the component will be `App()`;
+3. Let's transfer the routes from Index to App component;
+4. Import [src/App.js](./src/App.js) into [src/index.js](./src/index.js) and replace `<Route />` to `<App />`.
+
+Now, within [App Component](./src/App.js) we could get the informations from Redux.
+
+### Creating groups of Routes (for auth and not authenticated user)
+
+Till now, our [src/routes.js](./src/routes.js) is like this:
+
+```javascript
+export default createAppContainer(
+  createSwitchNavigator({
+    SignIn,
+    SignUp,
+  }),
+);
+```
+
+But we can create **GROUPS** within `createSwitchNavigator`. And each group we may apply differents kinds of navigators.
+
+Note that, different from SignIn/Out, our Dashboard has one bottom tab navigator:
+
+![navigator](./readme_nav.png)
+
+### Defining authenticated and unauthenticated routes
+
+How could we make our routes to understand which routes are for authenticated users and which routes are for unauthenticated users?
+
+First we need to convert our exportable `createAppContainer` in a function because we need to inject inside it the `isSigned` flag which indicates wether user is authenticated or not.
+
+```javascript
+export default (isSigned = false) => createAppContainer(...)
+```
+
+So, we need to indicate which route is the initial route:
+
+```javascript
+export default (isSigned = false) =>
+  createAppContainer(
+    createSwitchNavigator(
+      {
+        Sign: createSwitchNavigator({
+          SignIn,
+          SignUp,
+        }),
+
+        App: createBottomTabNavigator({
+          Dashboard,
+        }),
+      },
+      {
+        initialRouteName: isSigned ? 'App' : 'Sign', // 👈 if isSigned==true use App route group
+      },
+    ),
+  );
+```
+
+Now, this router component is transformed to a function which returns a component. So within [App.js](./src/App.js) we cannot call Routes directly in JSX manner (import Routes and apply <Routes />), instead we need to do as the follow:
+
+```javascript
+import React from 'react';
+import {useSelector} from 'react-redux';
+
+import createRouter from './routes'; // 👈 we change the name of importation element
+
+// import { Container } from './styles';
+
+export default function src() {
+  const signed = useSelector(state => state.auth.signed);
+
+  const Route = createRouter(signed); // 👈 First we need to store it
+
+  return <Route />;
+}
+```

@@ -16,12 +16,12 @@ import {
   SignLinkText,
 } from './styles';
 
-const loading = useSelector(state => state.auth.loading);
-
 export default function SignUp({navigation}) {
   /**
    * {navigation} is a native property from a component which is responsible from navigation
    */
+
+  const loading = useSelector(state => state.auth.loading);
 
   const emailRef = useRef();
   const passwordRef = useRef();

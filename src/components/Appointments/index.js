@@ -1,25 +1,40 @@
-import React from 'react';
+import React, {useMemo} from 'react';
+import {parseISO, formatRelative} from 'date-fns';
+import en from 'date-fns/locale/en-US';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {Container, Left, Avatar, Info, Name, Time} from './styles';
 
-export default function Appointments() {
+export default function Appointments({data, onCancel}) {
+  const dateParsed = useMemo(() => {
+    return formatRelative(parseISO(data.date), new Date(), {
+      locale: en,
+      addSuffix: true,
+    });
+  });
+
   return (
-    <Container>
+    <Container past={data.past}>
       <Left>
         <Avatar
-          source={{uri: 'https://api.adorable.io/avatar/50/rodrigotamura.png'}}
+          source={{
+            uri: data.provider.avatar
+              ? data.provider.avatar.url
+              : `https://api.adorable.io/avatar/50/${data.provider.name}.png`,
+          }}
         />
         <Info>
-          <Name>Rodrigo Tamura</Name>
-          <Time>in 3 hours</Time>
+          <Name>{data.provider.name}</Name>
+          <Time>{dateParsed}</Time>
         </Info>
       </Left>
 
-      <TouchableOpacity onPress={() => {}}>
-        <Icon name="event-busy" size={20} color="#f64c75" />
-      </TouchableOpacity>
+      {data.cancelable && !data.canceled_at && (
+        <TouchableOpacity onPress={onCancel}>
+          <Icon name="event-busy" size={20} color="#f64c75" />
+        </TouchableOpacity>
+      )}
     </Container>
   );
 }

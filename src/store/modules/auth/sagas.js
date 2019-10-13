@@ -43,7 +43,7 @@ export function* signUp({payload}) {
       password,
     });
 
-    history.push('/');
+    // history.push('/');
   } catch (err) {
     Alert.alert(
       'Subscription failed',
@@ -65,7 +65,7 @@ export function setToken({payload}) {
 }
 
 export function signOut() {
-  history.push('/');
+  // history.push('/');
 }
 
 export default all([

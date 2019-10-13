@@ -197,3 +197,15 @@ export default function src() {
   return <Route />;
 }
 ```
+
+## Step-by-step pages
+
+The kind of navigation from our app is in tab style, and we want to add a new item/menu which will create a new Appointment for this user.
+
+![nav stack](./readme_nav_stack.png)
+
+As you may realize, the first screen (list of appointments) has an icon of **new appointment**. When user press it a new page should appear to select who is the service provider, and finally user can select a provider to go to the next screen to select the date and time and so on.
+
+So these pages of steb-by-step we will not show the tabs menu. So we will use **stack navigator** because we need to go back to the previous step, if it is necessary for user.
+
+In order to display the add new appointment menu icon, we need to NEST the stack menu into the bottom tab navigator. Please you could [checkout here](./src/routes.js) and see the implementations.

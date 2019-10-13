@@ -83,3 +83,13 @@ Now create a new component: [src/components/Background/index.js](src/components/
 ## Input & Button
 
 We will create a component for [Input](./src/components/Input/index.js) and another for [Button](./src/components/Button/index.js), because we will use them over whole application.
+
+## Applying delay at Saga
+
+We want to verify how is the loading in our [Button Component](./src/components/Button) when we send something to the server. However, when we are working locally it is very difficult to test because it is almost imperceptible due speed of response.
+
+In this case we will apply some delay in our Saga's response:
+
+1. In some [sagas file](./src/store/modules/auth/sagas.js) import `delay` from `redux-saga/effects`;
+2. Add `yield.delay(<milisseconds>)` in the place you wish to test your application;
+3. Test the feature (in this case we were testing [Signin Page](./src/pages/SignIn/index.js)).

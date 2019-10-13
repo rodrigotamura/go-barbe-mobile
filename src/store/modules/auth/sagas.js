@@ -1,5 +1,5 @@
 import {Alert} from 'react-native';
-import {all, takeLatest, call, put} from 'redux-saga/effects';
+import {all, takeLatest, call, put, delay} from 'redux-saga/effects';
 
 import api from '~/services/api';
 import {signInSuccess, signFailure} from './actions';
@@ -23,6 +23,8 @@ export function* signIn({payload}) {
     // Including token in header requests
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
+    yield delay(3000); // applying delay
+
     yield put(signInSuccess(token, user));
 
     // history.push('/dashboard');
@@ -39,14 +41,13 @@ export function* signUp({payload}) {
       name,
       email,
       password,
-      provider: true,
     });
 
     history.push('/');
   } catch (err) {
     Alert.alert(
       'Subscription failed',
-      'It had an error in subscription, verify your data',
+      `It had an error in subscription. (Server response: ${err.response.data.error})`,
     );
 
     yield put(signFailure());

@@ -1,5 +1,6 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
+import {StatusBar} from 'react-native';
 
 import createRouter from './routes';
 
@@ -10,5 +11,10 @@ export default function App() {
 
   const Route = createRouter(signed);
 
-  return <Route />;
+  return (
+    <>
+      <StatusBar barStyle="light-content" backgroundColor="#22202C" />
+      <Route />
+    </>
+  );
 }

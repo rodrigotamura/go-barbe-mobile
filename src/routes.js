@@ -67,6 +67,13 @@ export default (isSigned = false) =>
             Profile,
           },
           {
+            /**
+             * when we leave from some stack nav menu and we turn back to it again,
+             * it will be rendered latest stack route.
+             * To scape from this, we set resetOnBlur: true.
+             * Example applyied: when we confirm new schedule
+             */
+            resetOnBlur: true,
             tabBarOptions: {
               keyboardHidesTabBar: true, // keyboard overlay tabs when opened
               activeTintColor: '#FFF', // highlight selected route

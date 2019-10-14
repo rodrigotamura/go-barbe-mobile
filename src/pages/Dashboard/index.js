@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {withNavigationFocus} from 'react-navigation';
 import api from '~/services/api';
 
 import Background from '~/components/Background';
@@ -7,15 +8,23 @@ import Background from '~/components/Background';
 import {Container, Title, List} from './styles';
 import Appointment from '~/components/Appointments';
 
-export default function Dashboard() {
+function Dashboard({isFocused}) {
+  /**
+   * {isFocused}: If this route received a focus
+   */
+
   const [appointments, setAppointments] = useState([]);
 
+  async function loadAppointments() {
+    const response = await api.get('appointments');
+    setAppointments(response.data);
+  }
+
   useEffect(() => {
-    (async function loadAppointments() {
-      const response = await api.get('appointments');
-      setAppointments(response.data);
-    })();
-  }, []);
+    if (isFocused) {
+      loadAppointments();
+    }
+  }, [isFocused]);
 
   async function handleCancel(id) {
     const response = await api.delete(`appointments/${id}`);
@@ -59,3 +68,5 @@ Dashboard.navigationOptions = {
    * {tintColor} comes from routes.js
    */
 };
+
+export default withNavigationFocus(Dashboard);

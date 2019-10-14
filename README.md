@@ -209,3 +209,23 @@ As you may realize, the first screen (list of appointments) has an icon of **new
 So these pages of steb-by-step we will not show the tabs menu. So we will use **stack navigator** because we need to go back to the previous step, if it is necessary for user.
 
 In order to display the add new appointment menu icon, we need to NEST the stack menu into the bottom tab navigator. Please you could [checkout here](./src/routes.js) and see the implementations.
+
+# Component for iOS or Android?
+
+React Native has an amazing feature which we can create a version for Android usage and another version for iOS usage in a component and it will choose the right version of the compatible file.
+
+We will apply this technique creating a [Date Input](./src/components/DateInput) which is different between iOS and Android.
+
+1. We will create 3 files:
+
+- [src/components/DateInput/index.android.js](src/components/DateInput/index.android.js);
+- [src/components/DateInput/index.ios.js](src/components/DateInput/index.ios.js);
+- [src/components/DateInput/index.js](src/components/DateInput/index.ios.js) (this file will be EMPTY. It is created in order to fix eslint import);
+
+2. Import this component normally:
+
+```javascript
+import DateInput from '~/components/DateInput';
+```
+
+3. If it is necessary, create only one [styles.js](src/components/DateInput/styles.js) to use on both.
